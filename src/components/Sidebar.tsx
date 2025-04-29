@@ -33,21 +33,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination, draggableId } = result;
+    const { destination, draggableId } = result;
     if (!destination) return;
 
-    const sourceId = source.droppableId;
     const destinationId = destination.droppableId;
 
-    const updateList = (
-      listSetter: React.Dispatch<React.SetStateAction<string[]>>,
-      currentList: string[]
-    ) => {
-      const newList = [...currentList];
-      newList.splice(source.index, 1);
-      newList.splice(destination.index, 0, draggableId);
-      listSetter(newList);
-    };
 
     const removeFromLists = () => {
       setRows((prev) => prev.filter((id) => id !== draggableId));
