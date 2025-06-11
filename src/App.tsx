@@ -1,7 +1,9 @@
+// App.tsx
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import PivotTable from "./components/PivotTable";
 import { FieldType, ValueField } from "./types";
+import detectFieldTypes from "./components/detectFieldTypes";
 
 const App: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
@@ -10,12 +12,13 @@ const App: React.FC = () => {
   const [rows, setRows] = useState<string[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [values, setValues] = useState<ValueField[]>([]);
+  const [rowDateGroupings, setRowDateGroupings] = useState<Record<string, "Quarterly" | "Half-Yearly" | "Yearly" | null>>({});
+  const [columnDateGroupings, setColumnDateGroupings] = useState<Record<string, "Quarterly" | "Half-Yearly" | "Yearly" | null>>({});
   const [isActive, setIsActive] = useState(false);
-  const [selected, setselected] = useState(true);
+  const [selected, setSelected] = useState(true);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setselected(false);
-
+    setSelected(false);
     setTimeout(() => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -32,11 +35,7 @@ const App: React.FC = () => {
           }, {} as Record<string, string>)
         );
 
-        const types: Record<string, FieldType> = {};
-        for (const field of headers) {
-          const sample = rows[0]?.[field];
-          types[field] = !isNaN(Number(sample)) ? "number" : "string";
-        }
+        const types = detectFieldTypes(rows, headers);
 
         setData(rows);
         setFields(headers);
@@ -50,41 +49,25 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      
       <div className="pivot-table">
-        
-
-
-
-
-
-
-
-
-
-
-
-        
         <div className={selected ? "title stitle" : "title"}>
           <h1>Pivot Table</h1>
           <input type="file" accept=".csv" onChange={handleFileUpload} autoFocus />
-        </div>  
-
+        </div>
         {data.length > 0 && (
           <div>
-          
-
             <PivotTable
               data={data}
               rows={rows}
               columns={columns}
               values={values}
               fieldTypes={fieldTypes}
+              rowDateGroupings={rowDateGroupings}
+              columnDateGroupings={columnDateGroupings}
             />
           </div>
         )}
       </div>
-
       <Sidebar
         isActive={isActive ? "sidebar active" : "sidebar"}
         fields={fields}
@@ -95,6 +78,10 @@ const App: React.FC = () => {
         setColumns={setColumns}
         setValues={setValues}
         fieldTypes={fieldTypes}
+        rowDateGroupings={rowDateGroupings}
+        setRowDateGroupings={setRowDateGroupings}
+        columnDateGroupings={columnDateGroupings}
+        setColumnDateGroupings={setColumnDateGroupings}
       />
     </div>
   );

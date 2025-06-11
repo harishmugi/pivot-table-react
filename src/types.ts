@@ -1,8 +1,10 @@
-export type FieldType = "string" | "number";
+export type FieldType = "string" | "number" | "date";
 
 export interface ValueField {
   field: string;
   aggregations: string[];
+  dateGrouping?: "Quarterly" | "Half-Yearly" | "Yearly" | null;
+  
 }
 
 export interface DragItem {

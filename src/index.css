@@ -265,3 +265,23 @@ select {
 
 
 
+/* index.css */
+.date-grouping-select {
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  padding: 3%;
+  margin: 10px;
+  box-shadow: inset 1px 1px 5px black;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 1, 255, 0.511) transparent;
+  outline: none;
+  background-color: #be38ee3c;
+  color: #fff;
+}
+
+.date-grouping-select option:checked {
+  border-radius: 5px;
+  padding: 0px 5px;
+  background-color: #bd38ee;
+}
